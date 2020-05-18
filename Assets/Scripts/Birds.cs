@@ -10,12 +10,19 @@ public class Birds : MonoBehaviour
     public int numBirds = 5;
     private GameObject[] birds;
     private bool isPlaying = false;
+
+    public Slider numBirdsSlider;
+    public Slider birdDistSlider;
+
     void Start() {
 
         playButton.onClick.AddListener(HandlePlayback);
 
-        birds = new GameObject[numBirds];
-        for (int i = 0; i < numBirds; i++)
+        numBirdsSlider.onValueChanged.AddListener(delegate { HandleBirdCountChanged(); });
+        birdDistSlider.onValueChanged.AddListener(delegate { HandleBirdDistChanged(); });
+
+        birds = new GameObject[25];
+        for (int i = 0; i < 25; i++)
         {
             Vector3 pos = new Vector3(Random.Range(-3, 3), 0, Random.Range(-3, 3));
             birds[i] = Instantiate(bird, pos, transform.rotation);
@@ -50,4 +57,24 @@ public class Birds : MonoBehaviour
 
         isPlaying = !isPlaying;
     }
+
+    void HandleBirdCountChanged() {
+        Debug.Log(numBirdsSlider.value);
+        numBirds = (int) numBirdsSlider.value;
+        for (int i = 0; i < 25; i++)
+        {
+            if (i > numBirds) birds[i].GetComponent<Bird>().Stop();
+            else birds[i].GetComponent<Bird>().Play();
+        }
+
+    }
+
+    void HandleBirdDistChanged()
+    {
+        for (int i = 0; i < 25; i++)
+        {
+            birds[i].GetComponent<Bird>().distance = birdDistSlider.value;
+        }
+    }
+
 }

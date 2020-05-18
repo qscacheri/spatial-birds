@@ -13,6 +13,7 @@ public class Bird : MonoBehaviour
     private float pitch = 1;
     private bool isPlaying = false;
     public float distance = 10f;
+    public float speed = 1f;
 
     private Vector3 noisePositions;
 
@@ -36,15 +37,15 @@ public class Bird : MonoBehaviour
         noisePositions.z += .01f;
 
         Vector3 positionChange = new Vector3();
-        positionChange.x = ScaleValue(Mathf.PerlinNoise(noisePositions.x, 0), 0, 1, -distance, distance);
-        positionChange.y = ScaleValue(Mathf.PerlinNoise(noisePositions.y, 0), 0, 1, -distance, distance);
-        positionChange.z = ScaleValue(Mathf.PerlinNoise(noisePositions.z, 0), 0, 1, -distance, distance);
+        positionChange.x = ScaleValue(Mathf.PerlinNoise(noisePositions.x, 0), 0, 1, -speed, speed);
+        positionChange.y = ScaleValue(Mathf.PerlinNoise(noisePositions.y, 0), 0, 1, -speed, speed);
+        positionChange.z = ScaleValue(Mathf.PerlinNoise(noisePositions.z, 0), 0, 1, -speed, speed);
 
-        if (transform.position.x + positionChange.x < -4 || transform.position.x + positionChange.x > 4)
+        if (transform.position.x + positionChange.x < -distance || transform.position.x + positionChange.x > distance)
             positionChange.x *= -1;
-        if (transform.position.y + positionChange.y < -4 || transform.position.y + positionChange.y > 4)
+        if (transform.position.y + positionChange.y < -distance || transform.position.y + positionChange.y > distance)
             positionChange.y *= -1;
-        if (transform.position.z + positionChange.z < -4 || transform.position.z + positionChange.z > 4)
+        if (transform.position.z + positionChange.z < -distance || transform.position.z + positionChange.z > distance)
             positionChange.z *= -1;
 
         transform.position += positionChange;
